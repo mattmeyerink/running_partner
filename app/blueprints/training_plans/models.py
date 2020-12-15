@@ -11,6 +11,7 @@ class TrainingPlan(db.Model):
     difficulty = db.Column(db.String(50))
     frequency = db.Column(db.Integer)
     plan_length = db.Column(db.Integer)
+    plan = db.Column(db.String())
 
     def __repr__(self):
         return f"<Plan: {self.race_length} | {self.difficulty}>"
@@ -24,59 +25,5 @@ class TrainingPlan(db.Model):
         """Create a new plan from a dictionary of plan information."""
         for field in ["race_length", "race_name", "difficulty", "frequency",
                       "plan_length"]:
-            if field in data:
-                setattr(self, field, data[field])
-
-class BeginnerMarathon(db.Model):
-    """Holds the data for each day's training"""
-    __tablename__ = "beginner_marathon"
-    week = db.Column(db.Float, primary_key=True)
-    monday = db.Column(db.Float)
-    tuesday = db.Column(db.Float)
-    wednesday = db.Column(db.Float)
-    thursday = db.Column(db.Float)
-    friday = db.Column(db.Float)
-    saturday = db.Column(db.Float)
-    sunday = db.Column(db.Float)
-
-    def __repr__(self):
-        return f"<Week {self.week}>"
-
-    def save(self):
-        """Commit the training plan to the db."""
-        db.session.add(self)
-        db.session.commit()
-
-    def from_dict(self, data):
-        """Create a new week of runs from a dictionary of runs."""
-        for field in ["monday", "tuesday", "wednesday", "thursday", "friday",
-                      "saturday", "sunday"]:
-            if field in data:
-                setattr(self, field, data[field])
-
-class IntermediateMarathon(db.Model):
-    """Holds the data for each day's training"""
-    __tablename__ = "beginner_marathon"
-    week = db.Column(db.Float, primary_key=True)
-    monday = db.Column(db.Float)
-    tuesday = db.Column(db.Float)
-    wednesday = db.Column(db.Float)
-    thursday = db.Column(db.Float)
-    friday = db.Column(db.Float)
-    saturday = db.Column(db.Float)
-    sunday = db.Column(db.Float)
-
-    def __repr__(self):
-        return f"<Week {self.week}>"
-
-    def save(self):
-        """Commit the training plan to the db."""
-        db.session.add(self)
-        db.session.commit()
-
-    def from_dict(self, data):
-        """Create a new week of runs from a dictionary of runs."""
-        for field in ["monday", "tuesday", "wednesday", "thursday", "friday",
-                      "saturday", "sunday"]:
             if field in data:
                 setattr(self, field, data[field])
