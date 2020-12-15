@@ -30,14 +30,14 @@ class TrainingPlan(db.Model):
 class BeginnerMarathon(db.Model):
     """Holds the data for each day's training"""
     __tablename__ = "beginner_marathon"
-    week = db.Column(db.Integer, primary_key=True)
-    monday = db.Column(db.Integer)
-    tuesday = db.Column(db.Integer)
-    wednesday = db.Column(db.Integer)
-    thursday = db.Column(db.Integer)
-    friday = db.Column(db.Integer)
-    saturday = db.Column(db.Integer)
-    sunday = db.Column(db.Integer)
+    week = db.Column(db.Float, primary_key=True)
+    monday = db.Column(db.Float)
+    tuesday = db.Column(db.Float)
+    wednesday = db.Column(db.Float)
+    thursday = db.Column(db.Float)
+    friday = db.Column(db.Float)
+    saturday = db.Column(db.Float)
+    sunday = db.Column(db.Float)
 
     def __repr__(self):
         return f"<Week {self.week}>"
@@ -53,4 +53,30 @@ class BeginnerMarathon(db.Model):
                       "saturday", "sunday"]:
             if field in data:
                 setattr(self, field, data[field])
-    
+
+class IntermediateMarathon(db.Model):
+    """Holds the data for each day's training"""
+    __tablename__ = "beginner_marathon"
+    week = db.Column(db.Float, primary_key=True)
+    monday = db.Column(db.Float)
+    tuesday = db.Column(db.Float)
+    wednesday = db.Column(db.Float)
+    thursday = db.Column(db.Float)
+    friday = db.Column(db.Float)
+    saturday = db.Column(db.Float)
+    sunday = db.Column(db.Float)
+
+    def __repr__(self):
+        return f"<Week {self.week}>"
+
+    def save(self):
+        """Commit the training plan to the db."""
+        db.session.add(self)
+        db.session.commit()
+
+    def from_dict(self, data):
+        """Create a new week of runs from a dictionary of runs."""
+        for field in ["monday", "tuesday", "wednesday", "thursday", "friday",
+                      "saturday", "sunday"]:
+            if field in data:
+                setattr(self, field, data[field])
