@@ -27,3 +27,16 @@ class TrainingPlan(db.Model):
                       "plan_length"]:
             if field in data:
                 setattr(self, field, data[field])
+
+    def to_dict(self):
+        """Outputs the object data into a dictionary. Used to jsonify it."""
+        data = {
+            "id": self.id,
+            "race_length": self.race_length,
+            "race_name": self.race_name,
+            "difficulty": self.difficulty,
+            "freqency": self.frequency,
+            "plan_length": self.plan_length,
+            "plan": self.plan
+        }
+        return data
