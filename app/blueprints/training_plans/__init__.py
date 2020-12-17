@@ -1,4 +1,4 @@
-"""Blueprint for the training plans."""
+"""Blueprint for the training plans API."""
 import flask
 
 
