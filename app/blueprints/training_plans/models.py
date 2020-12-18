@@ -35,7 +35,7 @@ class TrainingPlan(db.Model):
             "race_length": self.race_length,
             "race_name": self.race_name,
             "difficulty": self.difficulty,
-            "freqency": self.frequency,
+            "frequency": self.frequency,
             "plan_length": self.plan_length,
             "plan": self.plan
         }
