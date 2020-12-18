@@ -23,6 +23,9 @@ def create_app():
     db.init_app(app)
 
     # Register the blueprints
+    from .blueprints.authentication import auth_bp
+    app.register_blueprint(auth_bp)
+    
     from .blueprints.main import main_bp
     app.register_blueprint(main_bp)
 
