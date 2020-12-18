@@ -22,11 +22,21 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def from_dict(self):
+    def from_dict(self, data):
         """Create a new user object from a dict."""
         for field in ["first_name", "last_name", "username", "email"]:
             if field in data:
                 setattr(self, field, data[field])
+    
+    def to_dict(self):
+        """Returns a dictionary with user information."""
+        data = {
+            "id" = self.id,
+            "username" = self.username,
+            "first_name" = self.first_name,
+            "last_name" = self.last_name,
+            "email" = self.email
+        }
 
     def hash_password(self, original_password):
         """Hashes the input password so it can be stored in the db safely."""
