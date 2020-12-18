@@ -2,6 +2,6 @@
 import flask
 
 
-auth_bp = flask.Blueprint("auth", url_prefix="/authentication")
+auth_bp = flask.Blueprint("auth", __name__, url_prefix="/authentication")
 
 from . import models, routes
