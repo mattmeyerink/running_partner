@@ -12,7 +12,7 @@ def register_user():
     # Check if the email is already in the db
     email = data["email"]
 
-    user = User.query.get(email=email).all()
+    user = User.query.filter_by(email=email).all()
     
     # Return conflict error if the email is already in use
     if user:
@@ -41,11 +41,11 @@ def login_user():
     password = data["password"]
 
     # Query the db for a user with that username
-    user = User.query.get(email=email).all()[0]
+    user = User.query.filter_by(email=email).all()[0]
     
     # If the credentials are valid, return the user data
     if user and user.check_hashed_password(password):
-        return flask.jsonify(user.to_dict())
+        return flask.jsonify(user.to_dict()), 200
     
     # Return 401: Unauthorized
     return flask.abort(401)

@@ -1,7 +1,7 @@
 """Contains the create_app function to Initialize and instance of the app."""
 import flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from config import Config
 
 
@@ -15,7 +15,7 @@ def create_app():
     
     # Allow cross origin requests while API and App still operating on local machine
     CORS(app)
-
+    
     # Add the config settings
     app.config.from_object(Config)
 
