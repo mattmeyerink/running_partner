@@ -41,11 +41,11 @@ def login_user():
     password = data["password"]
 
     # Query the db for a user with that username
-    user = User.query.filter_by(email=email).all()[0]
+    user = User.query.filter_by(email=email).all()
     
     # If the credentials are valid, return the user data
-    if user and user.check_hashed_password(password):
-        return flask.jsonify(user.to_dict()), 200
+    if user and user[0].check_hashed_password(password):
+        return flask.jsonify(user[0].to_dict()), 200
     
     # Return 401: Unauthorized
     return flask.abort(401)
