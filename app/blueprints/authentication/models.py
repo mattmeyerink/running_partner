@@ -12,6 +12,9 @@ class User(db.Model):
     username = db.Column(db.String(100), index=True)
     email = db.Column(db.String(100), unique=True, index=True)
     password = db.Column(db.String(200))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(100))
+    training_plan = db.Column(db.Boolean)
     created_on = db.Column(db.DateTime, default=dt.utcnow)
 
     def __repr__(self):
@@ -24,7 +27,8 @@ class User(db.Model):
 
     def from_dict(self, data):
         """Create a new user object from a dict."""
-        for field in ["first_name", "last_name", "username", "email"]:
+        for field in ["first_name", "last_name", "username", 
+                "email", "city", "state", "training_plan"]:
             if field in data:
                 setattr(self, field, data[field])
     
@@ -35,7 +39,10 @@ class User(db.Model):
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "email": self.email
+            "email": self.email,
+            "city": self.city,
+            "state": self.state,
+            "training_plan": self.training_plan
         }
         return data
 
