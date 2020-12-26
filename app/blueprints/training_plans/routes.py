@@ -2,6 +2,7 @@
 import flask
 from . import training_bp
 from .models import TrainingPlan
+from app.blueprints.authentication.models import User
 
 
 @training_bp.route("/all_plans", methods=["GET"])
@@ -25,3 +26,17 @@ def get_plan(id):
     """
     plan = TrainingPlan.query.get(id)
     return flask.jsonify(plan.to_dict())
+
+@training_bp.route("/add_plan/<int:user_id>", methods=["POST"])
+def add_plan(user_id):
+    """
+    Adds a customized training plan to user's account.
+    [POST] /add_plan/<int:user_id>
+    """
+    plan = flask.request.json["plan"]
+
+    user = User.query.get(user_id)
+    user.training_plan = plan
+    user.save()
+
+    return flask.Response(status=201)

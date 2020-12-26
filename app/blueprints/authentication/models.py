@@ -14,7 +14,7 @@ class User(db.Model):
     password = db.Column(db.String(200))
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
-    training_plan = db.Column(db.Boolean)
+    training_plan = db.Column(db.String())
     created_on = db.Column(db.DateTime, default=dt.utcnow)
 
     def __repr__(self):
