@@ -1,5 +1,6 @@
 """Contains the db model for a training plan."""
 from app import db
+from datetime import datetime as dt
 
 
 class TrainingPlan(db.Model):
@@ -45,7 +46,7 @@ class CustomPlan(db.Model):
     """Represents summary information for a training plan."""
     __tablename__ = "custom_training_plans"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.ForeignKey('user.id'))
+    user_id = db.Column(db.ForeignKey('users.id'))
     difficulty = db.Column(db.String(50))
     race_name = db.Column(db.String(100))
     plan_length = db.Column(db.Integer)

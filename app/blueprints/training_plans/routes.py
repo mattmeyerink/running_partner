@@ -39,3 +39,19 @@ def add_plan(user_id):
     plan.save()
 
     return flask.Response(status=201)
+
+@training_bp.route("/custom_plans/<int:user_id>", methods=["GET"])
+def get_custom_plan(user_id):
+    """
+    Get the custom plans for a specific user.
+    [GET] /custom_plans/<int:user_id>
+    """
+    # Get all of the plans under the current_user's account
+    plans_raw = CustomPlan.query.filter_by(user_id=user_id).all()
+
+    # Create output array of all plans
+    plans = []
+    for plan in plans_raw:
+        plans.append(plan.to_dict())
+
+    return flask.jsonify(plans)

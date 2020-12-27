@@ -15,7 +15,7 @@ class User(db.Model):
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
-    db.relationship('User', cascade='all, delete-orphan', backref='user', lazy=True)
+    db.relationship('User', cascade='all, delete-orphan', backref='users', lazy=True)
 
     def __repr__(self):
         return f"<User {self.id} | {self.username}>"
