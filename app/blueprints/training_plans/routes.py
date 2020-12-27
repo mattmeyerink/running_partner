@@ -1,8 +1,7 @@
 """Routes for API calls regarding training plans."""
 import flask
 from . import training_bp
-from .models import TrainingPlan
-from app.blueprints.authentication.models import User
+from .models import TrainingPlan, CustomPlan
 
 
 @training_bp.route("/all_plans", methods=["GET"])
@@ -30,13 +29,13 @@ def get_plan(id):
 @training_bp.route("/add_plan/<int:user_id>", methods=["POST"])
 def add_plan(user_id):
     """
-    Adds a customized training plan to user's account.
+    Create a custom plan for the user.
     [POST] /add_plan/<int:user_id>
     """
-    plan = flask.request.json["plan"]
+    data = flask.request.json
 
-    user = User.query.get(user_id)
-    user.training_plan = plan
-    user.save()
+    plan = CustomPlan()
+    plan.from_dict(data)
+    plan.save()
 
     return flask.Response(status=201)

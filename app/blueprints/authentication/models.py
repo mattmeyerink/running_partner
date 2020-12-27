@@ -14,8 +14,8 @@ class User(db.Model):
     password = db.Column(db.String(200))
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
-    training_plan = db.Column(db.String())
     created_on = db.Column(db.DateTime, default=dt.utcnow)
+    db.relationship('User', cascade='all, delete-orphan', backref='user', lazy=True)
 
     def __repr__(self):
         return f"<User {self.id} | {self.username}>"
@@ -28,7 +28,7 @@ class User(db.Model):
     def from_dict(self, data):
         """Create a new user object from a dict."""
         for field in ["first_name", "last_name", "username", 
-                "email", "city", "state", "training_plan"]:
+                "email", "city", "state"]:
             if field in data:
                 setattr(self, field, data[field])
     
@@ -41,8 +41,7 @@ class User(db.Model):
             "last_name": self.last_name,
             "email": self.email,
             "city": self.city,
-            "state": self.state,
-            "training_plan": self.training_plan
+            "state": self.state
         }
         return data
 
