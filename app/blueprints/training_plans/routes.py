@@ -43,7 +43,7 @@ def add_plan(user_id):
 @training_bp.route("/custom_plans/<int:user_id>", methods=["GET"])
 def get_custom_plan(user_id):
     """
-    Get the custom plans for a specific user.
+    Get all of the custom plans for a specific user.
     [GET] /custom_plans/<int:user_id>
     """
     # Get all of the plans under the current_user's account
@@ -55,3 +55,13 @@ def get_custom_plan(user_id):
         plans.append(plan.to_dict())
 
     return flask.jsonify(plans)
+
+@training_bp.route("/custom_plan/<int:plan_id>", methods=["GET"])
+def get_custom_plan_data(plan_id):
+    """
+    Get custom plan data for a specific plan.
+    [GET] /custom_plans/<int:plan_id>
+    """
+    plan = CustomPlan.query.get(plan_id)
+
+    return flask.jsonify(plan.to_dict())
