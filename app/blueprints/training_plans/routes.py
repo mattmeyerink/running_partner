@@ -65,3 +65,13 @@ def get_custom_plan_data(plan_id):
     plan = CustomPlan.query.get(plan_id)
 
     return flask.jsonify(plan.to_dict())
+
+@training_bp.route("/custom_plan/delete/<int:plan_id>", methods=["DELETE"])
+def delete_custom_plan(plan_id):
+    """
+    Delete a custom plan from the db.
+    [DELETE] /custom_plans/<int:plan_id>
+    """
+    plan = CustomPlan.query.get(plan_id)
+    plan.remove()
+    return flask.Response(status=200)

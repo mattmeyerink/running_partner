@@ -61,6 +61,11 @@ class CustomPlan(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def remove(self):
+        """Delete the plan from the db."""
+        db.session.delete(self)
+        db.session.commit()
+
     def from_dict(self, data):
         """Create a new training plan in the db from a dictionary."""
         for field in ["user_id", "difficulty", "race_name", "plan_length", "plan"]:
