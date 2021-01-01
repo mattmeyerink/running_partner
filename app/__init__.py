@@ -31,6 +31,9 @@ def create_app():
 
     from .blueprints.training_plans import training_bp
     app.register_blueprint(training_bp)
+    
+    from .blueprints.runs import runs_bp
+    app.register_blueprint(runs_bp)
 
     # Create the db
     with app.app_context():
