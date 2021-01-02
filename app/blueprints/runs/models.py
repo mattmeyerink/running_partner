@@ -21,6 +21,11 @@ class Run(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def remove(self):
+        """Delete the run from the db."""
+        db.session.delete(self)
+        db.session.commit()
+
     def from_dict(self, data):
         """Create a run from a dictionary."""
         for field in ["user_id", "distance", "date", "notes"]:
@@ -33,7 +38,7 @@ class Run(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "distance": self.distance,
-            "date": self.data,
+            "date": self.date,
             "notes": self.notes
         }
         return data

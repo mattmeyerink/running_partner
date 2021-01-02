@@ -31,5 +31,17 @@ def get_all_runs(user_id):
     runs = []
     for run in run_objects:
         runs.append(run.to_dict())
-        
+
     return flask.jsonify(runs)
+
+@runs_bp.route("/delete_run/<int:id>", methods=["DELTE"])
+def delete_run(id):
+    """
+    Deletes a run from the db by id
+    [DELETE] /delete_run/<int:id>
+    """
+    # Query to get the run to delete
+    run = Run.query.get(id)
+    run.remove()
+
+    return flask.Response(status=200)
