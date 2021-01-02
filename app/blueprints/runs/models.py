@@ -25,7 +25,7 @@ class Run(db.Model):
         """Create a run from a dictionary."""
         for field in ["user_id", "distance", "date", "notes"]:
             if field in data:
-                setattr(self, data[field])
+                setattr(self, field, data[field])
 
     def to_dict(self):
         """Output a dictionary from a run object."""
