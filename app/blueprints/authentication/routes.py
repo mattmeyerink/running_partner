@@ -49,3 +49,22 @@ def login_user():
     
     # Return 401: Unauthorized
     return flask.abort(401)
+
+@auth_bp.route("/get_user_data/<int:id>", methods=["GET"])
+def get_user_data(id):
+    """Route to get account data for a user."""
+    user = User.query.get(id)
+
+    return flask.jsonify(user.to_dict())
+
+@auth_bp.route("/edit_profile", methods=["POST"])
+def edit_profile():
+    """Route to update account information."""
+    data = flask.request.json
+    user = User.query.get(data["id"])
+
+    user.from_dict(data)
+    db.session.commit()
+
+    return flask.Response(status=200)
+
