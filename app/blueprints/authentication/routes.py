@@ -70,3 +70,10 @@ def edit_profile():
 
     return flask.Response(status=200)
 
+@auth_bp.route("/delete_account/<int:id>", methods=["DELETE"])
+def delete_account(id):
+    """Delete the users account from the db."""
+    user = User.query.get(id)
+    user.remove()
+
+    return flask.Response(status=200)

@@ -15,7 +15,9 @@ class User(db.Model):
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
-    db.relationship('User', cascade='all, delete-orphan', backref='users', lazy=True)
+    runs = db.relationship('Run', cascade='all, delete-orphan', backref='users', lazy=True)
+    custom_plans = db.relationship('CustomPlan', cascade='all, delete-orphan', backref='users', lazy=True)
+
 
     def __repr__(self):
         return f"<User {self.id} | {self.username}>"
@@ -23,6 +25,11 @@ class User(db.Model):
     def save(self):
         """Save the current user to the db."""
         db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        """Delete the current user from the db."""
+        db.session.delete(self)
         db.session.commit()
 
     def from_dict(self, data):
