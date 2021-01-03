@@ -1,4 +1,5 @@
 import flask
+from app import db
 from . import auth_bp
 from .models import User
 
@@ -61,7 +62,8 @@ def get_user_data(id):
 def edit_profile():
     """Route to update account information."""
     data = flask.request.json
-    user = User.query.get(data["id"])
+    id = data["id"]
+    user = User.query.get(id)
 
     user.from_dict(data)
     db.session.commit()
