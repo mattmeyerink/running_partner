@@ -1,5 +1,6 @@
 """Routes for API calls regarding training plans."""
 import flask
+from app import db
 from . import training_bp
 from .models import TrainingPlan, CustomPlan
 
@@ -74,4 +75,18 @@ def delete_custom_plan(plan_id):
     """
     plan = CustomPlan.query.get(plan_id)
     plan.remove()
+    return flask.Response(status=200)
+
+@training_bp.route("/custom_plan/edit/<int:id>", methods=["POST"])
+def edit_custom_plan(id):
+    """
+    Edit a custom plan in the db.
+    [POST] /custom_plan/edit/<int:id>
+    """
+    data = flask.request.json
+
+    plan = CustomPlan.query.get(id)
+    plan.plan = data["plan"]
+    db.session.commit()
+
     return flask.Response(status=200)
