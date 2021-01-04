@@ -15,9 +15,9 @@ class User(db.Model):
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
+    active_plan = db.Column(db.Integer)
     runs = db.relationship('Run', cascade='all, delete-orphan', backref='users', lazy=True)
     custom_plans = db.relationship('CustomPlan', cascade='all, delete-orphan', backref='users', lazy=True)
-
 
     def __repr__(self):
         return f"<User {self.id} | {self.username}>"
@@ -48,7 +48,8 @@ class User(db.Model):
             "last_name": self.last_name,
             "email": self.email,
             "city": self.city,
-            "state": self.state
+            "state": self.state,
+            "active_plan": self.active_plan
         }
         return data
 

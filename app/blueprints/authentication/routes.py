@@ -77,3 +77,18 @@ def delete_account(id):
     user.remove()
 
     return flask.Response(status=200)
+
+@auth_bp.route("/set_active_plan", methods=["POST"])
+def set_active_plan():
+    """Set the active plan of a given user."""
+    data = flask.request.json
+
+    user_id = data["user_id"]
+    plan_id = data["plan_id"]
+
+    user = User.query.get(user_id)
+
+    user.active_plan = plan_id
+    db.session.commit()
+
+    return flask.Response(status=200)
