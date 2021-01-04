@@ -35,7 +35,7 @@ class User(db.Model):
     def from_dict(self, data):
         """Create a new user object from a dict."""
         for field in ["first_name", "last_name", "username", 
-                "email", "city", "state"]:
+                "email", "city", "state", "active_plan"]:
             if field in data:
                 setattr(self, field, data[field])
     
