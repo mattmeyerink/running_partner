@@ -43,6 +43,7 @@ class Run(db.Model):
             "date": self.date,
             "notes": self.notes,
             "run_city": self.run_city,
-            "run_state": self.run_state
+            "run_state": self.run_state,
+            "created_on": self.created_on
         }
         return data

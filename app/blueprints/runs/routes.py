@@ -31,6 +31,9 @@ def get_all_runs(user_id):
     runs = []
     for run in run_objects:
         runs.append(run.to_dict())
+    
+    # Sort the list in decending order
+    runs.sort(key=lambda x: x["created_on"], reverse=True)
 
     return flask.jsonify(runs)
 
