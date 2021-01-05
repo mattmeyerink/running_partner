@@ -11,6 +11,8 @@ class Run(db.Model):
     distance = db.Column(db.Float)
     date = db.Column(db.String(50))
     notes = db.Column(db.String())
+    run_city = db.Column(db.String(50))
+    run_state = db.Column(db.String(10))
     created_on = db.Column(db.DateTime, default=dt.utcnow)
     
     def __repr__(self):
@@ -28,7 +30,7 @@ class Run(db.Model):
 
     def from_dict(self, data):
         """Create a run from a dictionary."""
-        for field in ["user_id", "distance", "date", "notes"]:
+        for field in ["user_id", "distance", "date", "notes", "run_city", "run_state"]:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -39,6 +41,8 @@ class Run(db.Model):
             "user_id": self.user_id,
             "distance": self.distance,
             "date": self.date,
-            "notes": self.notes
+            "notes": self.notes,
+            "run_city": self.run_city,
+            "run_state": self.run_state
         }
         return data
