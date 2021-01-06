@@ -55,6 +55,8 @@ def get_custom_plan(user_id):
     for plan in plans_raw:
         plans.append(plan.to_dict())
 
+    plans.sort(key=lambda x: x["created_on"], reverse=True)
+
     return flask.jsonify(plans)
 
 @training_bp.route("/custom_plan/<int:plan_id>", methods=["GET"])

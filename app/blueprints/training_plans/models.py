@@ -80,6 +80,7 @@ class CustomPlan(db.Model):
             "difficulty": self.difficulty,
             "race_name": self.race_name,
             "plan_length": self.plan_length,
-            "plan": self.plan
+            "plan": self.plan,
+            "created_on": self.created_on
         }
         return data
