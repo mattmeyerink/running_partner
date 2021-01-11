@@ -2,6 +2,7 @@
 import flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
+from flask_jwt_extended import JWTManager
 from config import Config
 
 
@@ -21,6 +22,9 @@ def create_app():
 
     # Link the db to the app
     db.init_app(app)
+
+    # Set up JWT
+    jwt = JWTManager(app)
 
     # Register the blueprints
     from .blueprints.authentication import auth_bp

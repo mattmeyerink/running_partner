@@ -1,4 +1,6 @@
 import flask
+from flask_jwt_extended import create_access_token
+from datetime import datetime
 from app import db
 from . import auth_bp
 from .models import User
@@ -46,7 +48,14 @@ def login_user():
     
     # If the credentials are valid, return the user data
     if user and user[0].check_hashed_password(password):
-        return flask.jsonify(user[0].to_dict()), 200
+        # Output the user's data to a dict
+        user_data = user[0].to_dict()
+
+        # Set up API access token 
+        expires = datetime.timedelta(days=7)
+        access_token = create_access_token(identity=str(user_data["id"]), 
+                expires_delta=expires)
+        return flask.jsonify(user_data), access_token, 200
     
     # Return 401: Unauthorized
     return flask.abort(401)
