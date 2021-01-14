@@ -1,11 +1,13 @@
 """Routes for API calls regarding training plans."""
 import flask
+from flask_jwt_extended import jwt_required
 from app import db
 from . import training_bp
 from .models import TrainingPlan, CustomPlan
 
 
 @training_bp.route("/all_plans", methods=["GET"])
+@jwt_required
 def get_all_plans():
     """
     Outputs training plan data

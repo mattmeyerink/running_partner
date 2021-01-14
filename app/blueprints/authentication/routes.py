@@ -1,6 +1,6 @@
 import flask
-from flask_jwt_extended import create_access_token
-from datetime import datetime
+from flask_jwt_extended import create_access_token, jwt_required
+from datetime import timedelta
 from app import db
 from . import auth_bp
 from .models import User
@@ -52,10 +52,11 @@ def login_user():
         user_data = user[0].to_dict()
 
         # Set up API access token 
-        expires = datetime.timedelta(days=7)
+        expires = timedelta(days=1)
         access_token = create_access_token(identity=str(user_data["id"]), 
                 expires_delta=expires)
-        return flask.jsonify(user_data), access_token, 200
+        user_data["token"] = access_token
+        return flask.jsonify(user_data), 200
     
     # Return 401: Unauthorized
     return flask.abort(401)
@@ -68,6 +69,7 @@ def get_user_data(id):
     return flask.jsonify(user.to_dict())
 
 @auth_bp.route("/edit_profile", methods=["POST"])
+@jwt_required
 def edit_profile():
     """Route to update account information."""
     data = flask.request.json
@@ -80,6 +82,7 @@ def edit_profile():
     return flask.Response(status=200)
 
 @auth_bp.route("/delete_account/<int:id>", methods=["DELETE"])
+@jwt_required
 def delete_account(id):
     """Delete the users account from the db."""
     user = User.query.get(id)
