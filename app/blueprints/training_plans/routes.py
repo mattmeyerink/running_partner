@@ -46,6 +46,7 @@ def add_plan(user_id):
     return flask.Response(status=201)
 
 @training_bp.route("/custom_plans/<int:user_id>", methods=["GET"])
+@jwt_required
 def get_custom_plan(user_id):
     """
     Get all of the custom plans for a specific user.
@@ -64,6 +65,7 @@ def get_custom_plan(user_id):
     return flask.jsonify(plans)
 
 @training_bp.route("/custom_plan/<int:plan_id>", methods=["GET"])
+@jwt_required
 def get_custom_plan_data(plan_id):
     """
     Get custom plan data for a specific plan.
@@ -74,6 +76,7 @@ def get_custom_plan_data(plan_id):
     return flask.jsonify(plan.to_dict())
 
 @training_bp.route("/custom_plan/delete/<int:plan_id>", methods=["DELETE"])
+@jwt_required
 def delete_custom_plan(plan_id):
     """
     Delete a custom plan from the db.
@@ -84,6 +87,7 @@ def delete_custom_plan(plan_id):
     return flask.Response(status=200)
 
 @training_bp.route("/custom_plan/edit/<int:id>", methods=["POST"])
+@jwt_required
 def edit_custom_plan(id):
     """
     Edit a custom plan in the db.
