@@ -21,6 +21,7 @@ def get_all_plans():
     return flask.jsonify(plans)
 
 @training_bp.route("/<int:id>", methods=["GET"])
+@jwt_required
 def get_plan(id):
     """
     Ouputs all data for a specific training plan
@@ -30,6 +31,7 @@ def get_plan(id):
     return flask.jsonify(plan.to_dict())
 
 @training_bp.route("/add_plan/<int:user_id>", methods=["POST"])
+@jwt_required
 def add_plan(user_id):
     """
     Create a custom plan for the user.
