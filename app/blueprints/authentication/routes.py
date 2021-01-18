@@ -62,11 +62,18 @@ def login_user():
     return flask.abort(401)
 
 @auth_bp.route("/get_user_data/<int:id>", methods=["GET"])
+@jwt_required
 def get_user_data(id):
     """Route to get account data for a user."""
     user = User.query.get(id)
-
-    return flask.jsonify(user.to_dict())
+    user_data = user.to_dict()
+    
+    # Set up API access token 
+    expires = timedelta(days=1)
+    access_token = create_access_token(identity=str(user_data["id"]), 
+            expires_delta=expires)
+    user_data["token"] = access_token
+    return flask.jsonify(user_data)
 
 @auth_bp.route("/edit_profile", methods=["POST"])
 @jwt_required
@@ -91,6 +98,7 @@ def delete_account(id):
     return flask.Response(status=200)
 
 @auth_bp.route("/set_active_plan", methods=["POST"])
+@jwt_required
 def set_active_plan():
     """Set the active plan of a given user."""
     data = flask.request.json
