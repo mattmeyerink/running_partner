@@ -1,10 +1,12 @@
 """Routes for runs section of the API."""
 import flask
+from flask_jwt_extended import jwt_required
 from . import runs_bp
 from .models import Run
 
 
 @runs_bp.route("/add_run", methods=["POST"])
+@jwt_required
 def add_run():
     """
     Adds a training plan to the db.
@@ -19,6 +21,7 @@ def add_run():
     return flask.Response(status=201)
 
 @runs_bp.route("/all_runs/<int:user_id>", methods=["GET"])
+@jwt_required
 def get_all_runs(user_id):
     """
     Returns all of the run data for a user.
@@ -38,6 +41,7 @@ def get_all_runs(user_id):
     return flask.jsonify(runs)
 
 @runs_bp.route("/delete_run/<int:id>", methods=["DELETE"])
+@jwt_required
 def delete_run(id):
     """
     Deletes a run from the db by id

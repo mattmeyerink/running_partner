@@ -29,9 +29,6 @@ def create_app():
     # Register the blueprints
     from .blueprints.authentication import auth_bp
     app.register_blueprint(auth_bp)
-    
-    from .blueprints.main import main_bp
-    app.register_blueprint(main_bp)
 
     from .blueprints.training_plans import training_bp
     app.register_blueprint(training_bp)
