@@ -6,7 +6,7 @@ from . import auth_bp
 from .models import User
 
 @auth_bp.route("/test", methods=["GET"])
-def test_deployment()
+def test_deployment():
     return flask.jsonify({"test": "Success"})
 
 
