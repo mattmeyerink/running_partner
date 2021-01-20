@@ -41,7 +41,7 @@ def register_user():
     return flask.Response(status=201)
 
 @auth_bp.route("/login", methods=["POST"])
-@cross_origin
+@cross_origin()
 def login_user():
     """Route to check login information."""
     # Gather the post data
