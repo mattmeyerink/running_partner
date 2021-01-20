@@ -1,5 +1,6 @@
 import flask
 from flask_jwt_extended import create_access_token, jwt_required
+from flask_cors import cross_origin
 from datetime import timedelta
 from app import db
 from . import auth_bp
@@ -40,6 +41,7 @@ def register_user():
     return flask.Response(status=201)
 
 @auth_bp.route("/login", methods=["POST"])
+@cross_origin
 def login_user():
     """Route to check login information."""
     # Gather the post data
