@@ -36,6 +36,9 @@ def create_app():
     from .blueprints.runs import runs_bp
     app.register_blueprint(runs_bp)
 
+    from .blueprints.weather import weather_bp
+    app.register_blueprint(weather_bp)
+
     # Create the db
     with app.app_context():
         db.create_all()
