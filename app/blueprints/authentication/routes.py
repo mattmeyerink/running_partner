@@ -15,11 +15,11 @@ def register_user():
     email = data["email"]
 
     user = User.query.filter_by(email=email).all()
-    
+
     # Return conflict error if the email is already in use
     if user:
         return flask.abort(409)
-    
+
     # Initiate the new user object
     new_user = User()
     new_user.from_dict(data)
@@ -31,8 +31,17 @@ def register_user():
     # Save the user session
     new_user.save()
 
-    # Return success created code
-    return flask.Response(status=201)
+    # Gather all of the user information
+    user = User.query.filter_by(email=email).all()
+    user_data = user[0].to_dict()
+
+    # Set up API access token
+    expires = timedelta(days=1)
+    access_token = create_access_token(identify=str(user_data["id"]),
+            expires_delta=expires)
+    user_data["token"] = access_token
+
+    return flask.jsonify(user_data), flask.Response(status=201)
 
 @auth_bp.route("/login", methods=["POST"])
 def login_user():
@@ -44,19 +53,19 @@ def login_user():
 
     # Query the db for a user with that username
     user = User.query.filter_by(email=email).all()
-    
+
     # If the credentials are valid, return the user data
     if user and user[0].check_hashed_password(password):
         # Output the user's data to a dict
         user_data = user[0].to_dict()
 
-        # Set up API access token 
+        # Set up API access token
         expires = timedelta(days=1)
-        access_token = create_access_token(identity=str(user_data["id"]), 
+        access_token = create_access_token(identity=str(user_data["id"]),
                 expires_delta=expires)
         user_data["token"] = access_token
         return flask.jsonify(user_data), 200
-    
+
     # Return 401: Unauthorized
     return flask.abort(401)
 
@@ -66,10 +75,10 @@ def get_user_data(id):
     """Route to get account data for a user."""
     user = User.query.get(id)
     user_data = user.to_dict()
-    
-    # Set up API access token 
+
+    # Set up API access token
     expires = timedelta(days=1)
-    access_token = create_access_token(identity=str(user_data["id"]), 
+    access_token = create_access_token(identity=str(user_data["id"]),
             expires_delta=expires)
     user_data["token"] = access_token
     return flask.jsonify(user_data)
