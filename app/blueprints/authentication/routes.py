@@ -17,7 +17,7 @@ def register_user():
     user = User.query.filter_by(email=email).all()
 
     # Return conflict error if the email is already in use
-    if len(user) > 0:
+    if user:
         return flask.abort(409)
 
     # Initiate the new user object
@@ -31,17 +31,7 @@ def register_user():
     # Save the user session
     new_user.save()
 
-    # Gather all of the user information
-    user = User.query.filter_by(email=email).all()
-    user_data = user[0].to_dict()
-
-    # Set up API access token
-    expires = timedelta(days=1)
-    access_token = create_access_token(identify=str(user_data["id"]),
-            expires_delta=expires)
-    user_data["token"] = access_token
-
-    return flask.jsonify(user_data), 201
+    return flask.Response(status=201)
 
 @auth_bp.route("/login", methods=["POST"])
 def login_user():
