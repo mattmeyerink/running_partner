@@ -41,7 +41,7 @@ def register_user():
             expires_delta=expires)
     user_data["token"] = access_token
 
-    return flask.jsonify(user_data), flask.Response(status=201)
+    return flask.jsonify(user_data), 201
 
 @auth_bp.route("/login", methods=["POST"])
 def login_user():
