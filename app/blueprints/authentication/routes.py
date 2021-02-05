@@ -17,7 +17,7 @@ def register_user():
     user = User.query.filter_by(email=email).all()
 
     # Return conflict error if the email is already in use
-    if user:
+    if len(user) > 0:
         return flask.abort(409)
 
     # Initiate the new user object
