@@ -50,7 +50,7 @@ def login_user():
         user_data = user[0].to_dict()
 
         # Set up API access token
-        expires = timedelta(minutes=1)
+        expires = timedelta(hours=1)
         access_token = create_access_token(identity=str(user_data["id"]),
                 expires_delta=expires)
         user_data["token"] = access_token
@@ -67,7 +67,7 @@ def get_user_data(id):
     user_data = user.to_dict()
 
     # Set up API access token
-    expires = timedelta(minutes=1)
+    expires = timedelta(hours=1)
     access_token = create_access_token(identity=str(user_data["id"]),
             expires_delta=expires)
     user_data["token"] = access_token
