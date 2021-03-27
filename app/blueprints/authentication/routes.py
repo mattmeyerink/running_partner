@@ -63,6 +63,7 @@ def login_user():
 @jwt_required
 def get_user_data(id):
     """Route to get account data for a user."""
+    # Retrieve the user id from the request
     user = User.query.get(id)
     user_data = user.to_dict()
 
@@ -77,10 +78,14 @@ def get_user_data(id):
 @jwt_required
 def edit_profile():
     """Route to update account information."""
+    # Retrive the new user data
     data = flask.request.json
+
+    # Pull the user id from the request
     id = data["id"]
     user = User.query.get(id)
 
+    # Update the user data in the db
     user.from_dict(data)
     db.session.commit()
 
@@ -101,11 +106,14 @@ def set_active_plan():
     """Set the active plan of a given user."""
     data = flask.request.json
 
+    # Pull the user id and plan id from the request
     user_id = data["user_id"]
     plan_id = data["plan_id"]
 
+    # Retrive user from the database
     user = User.query.get(user_id)
 
+    # Set the users active plan as the passed plan id
     user.active_plan = plan_id
     db.session.commit()
 
