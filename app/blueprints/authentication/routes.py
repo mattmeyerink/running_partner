@@ -4,6 +4,7 @@ from datetime import timedelta
 from app import db
 from . import auth_bp
 from .models import User
+from .reset_password_email import reset_password_email
 
 @auth_bp.route("/register", methods=["POST"])
 def register_user():
@@ -127,9 +128,9 @@ def initiate_password_reset():
 
     user = User.query.filter_by(email=email).all()
 
-    # TODO Send the email with the reset link if a user with that email was found
     if (user):
-        pass
+        reset_password_email()
+        return flask.Response(status=200)
 
     # Return not found if no user with that email found
     return flask.Response(status=404)
