@@ -129,7 +129,7 @@ def initiate_password_reset():
     user = User.query.filter_by(email=email).all()
 
     if (user):
-        reset_password_email()
+        reset_password_email(email, user.id)
         return flask.Response(status=200)
 
     # Return not found if no user with that email found
