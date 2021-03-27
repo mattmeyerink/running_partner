@@ -111,7 +111,7 @@ def set_active_plan():
 
     return flask.Response(status=200)
 
-@auth_bp.route("/initiate_password_reset", methods=["GET"])
+@auth_bp.route("/initiate_password_reset", methods=["POST"])
 def initiate_password_reset():
     """Initiate a password reset by confirming given email."""
     data = flask.request.json
