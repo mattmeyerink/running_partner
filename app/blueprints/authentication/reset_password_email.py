@@ -12,7 +12,7 @@ def reset_password_email(email, user_id):
         from_email='meyerink@umich.edu',
         to_emails=email,
         subject='Reset Your Running Partner Password',
-        html_content='<h3>Running Partner Password Reset</h3><p>Follow the link to reset your Running partner password</p><a href="http://localhost:3000/confirm_password_reset">Reset Password Here</a>'
+        html_content='<h3>Running Partner Password Reset</h3><p>Follow the link to reset your Running partner password</p><a href="http://localhost:3000/profile/reset_password/123">Reset Password Here</a>'
     )
 
     # Attempt to send the message
