@@ -123,14 +123,38 @@ def set_active_plan():
 @auth_bp.route("/initiate_password_reset", methods=["POST"])
 def initiate_password_reset():
     """Initiate a password reset by confirming given email."""
+    # Gather the data from the request
     data = flask.request.json
     email = data["email"]
 
+    # Find the user in the database
     user = User.query.filter_by(email=email).all()
 
+    # Send the email if the user data was found
     if (user):
         reset_password_email(email, user[0].id)
         return flask.Response(status=200)
 
     # Return not found if no user with that email found
     return flask.Response(status=404)
+
+@auth_bp.route("/reset_password", methods=["POST"])
+def reset_password():
+    """Reset the user's password."""
+    # Pull the user's data and password from the request
+    data = flask.request.json
+    user_id = data["user_id"]
+    password = data["password"]
+
+    # Find the user in the database
+    user = User.query.get(user_id)
+
+    # If the user data was found, hash the new password
+    if (user):
+        user.hash_password(password)
+        user.save()
+        return flask.Response(status=200)
+
+    # Return not found if the user was not found
+    return flask.Response(status=404)
+    
