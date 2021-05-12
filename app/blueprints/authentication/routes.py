@@ -1,5 +1,5 @@
 import flask
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
 from app import db
 from . import auth_bp
@@ -16,7 +16,6 @@ def register_user():
     email = data["email"]
 
     user = User.query.filter_by(email=email).all()
-
     # Return conflict error if the email is already in use
     if user:
         return flask.abort(409)
@@ -110,6 +109,10 @@ def set_active_plan():
     # Pull the user id and plan id from the request
     user_id = data["user_id"]
     plan_id = data["plan_id"]
+
+    # Make sure the passed user ID matches the token user
+    if (str(user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
 
     # Retrive user from the database
     user = User.query.get(user_id)
