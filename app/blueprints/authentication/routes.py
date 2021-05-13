@@ -1,3 +1,4 @@
+"""Routes for authentication for the app."""
 import flask
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
