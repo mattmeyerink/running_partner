@@ -63,6 +63,10 @@ def login_user():
 @jwt_required
 def get_user_data(id):
     """Route to get account data for a user."""
+    # Make sure the passed user ID matches the token user
+    if (str(id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     # Retrieve the user id from the request
     user = User.query.get(id)
     user_data = user.to_dict()
@@ -85,6 +89,10 @@ def edit_profile():
     id = data["id"]
     user = User.query.get(id)
 
+    # Make sure the passed user ID matches the token user
+    if (str(id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     # Update the user data in the db
     user.from_dict(data)
     db.session.commit()
@@ -95,6 +103,10 @@ def edit_profile():
 @jwt_required
 def delete_account(id):
     """Delete the users account from the db."""
+    # Make sure the passed user ID matches the token user
+    if (str(id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     user = User.query.get(id)
     user.remove()
 
