@@ -1,6 +1,6 @@
 """Routes for runs section of the API."""
 import flask
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import runs_bp
 from .models import Run
 
@@ -13,6 +13,11 @@ def add_run():
     [POST] /add_run
     """
     data = flask.request.json
+
+    # Verify the user id passed in the request
+    user_id = data["user_id"]
+    if (str(user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
 
     run = Run()
     run.from_dict(data)
@@ -27,6 +32,10 @@ def get_all_runs(user_id):
     Returns all of the run data for a user.
     [GET] /all_runs/<int:user_id>
     """
+    # Verify the user id passed in the request
+    if (str(user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     # Query the db for all of the users runs
     run_objects = Run.query.filter_by(user_id=user_id)
 
@@ -49,6 +58,11 @@ def delete_run(id):
     """
     # Query to get the run to delete
     run = Run.query.get(id)
+    
+    # Verify the current user is the one who entered the run
+    if (str(run.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     run.remove()
 
     return flask.Response(status=200)
