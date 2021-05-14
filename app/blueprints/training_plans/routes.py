@@ -1,6 +1,6 @@
 """Routes for API calls regarding training plans."""
 import flask
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from . import training_bp
 from .models import TrainingPlan, CustomPlan
@@ -37,6 +37,10 @@ def add_plan(user_id):
     Create a custom plan for the user.
     [POST] /add_plan/<int:user_id>
     """
+    # Verify the user with the token
+    if (str(user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     data = flask.request.json
 
     plan = CustomPlan()
@@ -52,6 +56,10 @@ def get_custom_plan(user_id):
     Get all of the custom plans for a specific user.
     [GET] /custom_plans/<int:user_id>
     """
+    # Verify the user with the passed token
+    if (str(user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     # Get all of the plans under the current_user's account
     plans_raw = CustomPlan.query.filter_by(user_id=user_id).all()
 
@@ -73,6 +81,10 @@ def get_custom_plan_data(plan_id):
     """
     plan = CustomPlan.query.get(plan_id)
 
+    # Verify the token user matches the plan's owner
+    if (str(plan.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     return flask.jsonify(plan.to_dict())
 
 @training_bp.route("/custom_plan/delete/<int:plan_id>", methods=["DELETE"])
@@ -83,6 +95,11 @@ def delete_custom_plan(plan_id):
     [DELETE] /custom_plans/<int:plan_id>
     """
     plan = CustomPlan.query.get(plan_id)
+
+    # Verify the token user matches the plan's owner
+    if (str(plan.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     plan.remove()
     return flask.Response(status=200)
 
@@ -96,6 +113,11 @@ def edit_custom_plan(id):
     data = flask.request.json
 
     plan = CustomPlan.query.get(id)
+
+    # Verify the token user matches the plan's owner
+    if (str(plan.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
     plan.plan = data["plan"]
     db.session.commit()
 
