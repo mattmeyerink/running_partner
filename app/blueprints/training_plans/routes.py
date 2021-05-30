@@ -119,6 +119,7 @@ def edit_custom_plan(id):
         return flask.Response(status=403)
 
     plan.plan = data["plan"]
+    plan.race_name = data["race_name"]
     db.session.commit()
 
     return flask.Response(status=200)
