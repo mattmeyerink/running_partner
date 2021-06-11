@@ -66,3 +66,26 @@ def delete_run(id):
     run.remove()
 
     return flask.Response(status=200)
+
+@runs_bp.route("/edit_run/<int:id>", methods=["POST"])
+@jwt_required
+def edit_run(id):
+    """
+    Edits a run in the database by id
+    [POST] /edit_run/<int:id>
+    """
+    # Pull the run data from the request
+    data = flask.request.json
+
+    # Query to get the run to edit
+    run = Run.query.get(id)
+
+    # Verify the current user is the one who owns the run
+    if (str(run.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
+
+    # Update the run and save it to the database
+    run.from_dict(data)
+    run.save()
+
+    return flask.Response(200)
