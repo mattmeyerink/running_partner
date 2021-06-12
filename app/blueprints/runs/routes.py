@@ -81,11 +81,11 @@ def edit_run(id):
     run = Run.query.get(id)
 
     # Verify the current user is the one who owns the run
-    # if (str(run.user_id) != get_jwt_identity()):
-    #     return flask.Response(status=403)
+    if (str(run.user_id) != get_jwt_identity()):
+        return flask.Response(status=403)
 
     # Update the run and save it to the database
     run.from_dict(data)
     run.save()
 
-    return flask.Response(200)
+    return flask.Response(status=200)
