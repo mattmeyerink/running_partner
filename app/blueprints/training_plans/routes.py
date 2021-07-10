@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from . import training_bp
 from .models import TrainingPlan, CustomPlan
-from runs.models import Run
+from app.blueprints.runs.models import Run
 
 
 @training_bp.route("/all_plans", methods=["GET"])
@@ -51,7 +51,7 @@ def add_plan(user_id):
     return flask.Response(status=201)
 
 @training_bp.route("/custom_plans/<int:user_id>", methods=["GET"])
-@jwt_required
+#@jwt_required
 def get_custom_plan(user_id):
     """
     Get all of the custom plans for a specific user.
@@ -59,8 +59,8 @@ def get_custom_plan(user_id):
     [GET] /custom_plans/<int:user_id>
     """
     # Verify the user with the passed token
-    if (str(user_id) != get_jwt_identity()):
-        return flask.Response(status=403)
+    # if (str(user_id) != get_jwt_identity()):
+    #     return flask.Response(status=403)
 
     # Get all of the plans under the current_user's account
     plans_raw = CustomPlan.query.filter_by(user_id=user_id).all()
