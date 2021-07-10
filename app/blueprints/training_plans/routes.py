@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from . import training_bp
 from .models import TrainingPlan, CustomPlan
+from runs.models import Run
 
 
 @training_bp.route("/all_plans", methods=["GET"])
@@ -54,6 +55,7 @@ def add_plan(user_id):
 def get_custom_plan(user_id):
     """
     Get all of the custom plans for a specific user.
+    Also returns all of the runs for the user for use on each plan page
     [GET] /custom_plans/<int:user_id>
     """
     # Verify the user with the passed token
@@ -67,10 +69,28 @@ def get_custom_plan(user_id):
     plans = []
     for plan in plans_raw:
         plans.append(plan.to_dict())
-
+    
+    # Sort the list in descending order of creation
     plans.sort(key=lambda x: x["created_on"], reverse=True)
 
-    return flask.jsonify(plans)
+    # Query the db for all of the users runs
+    run_objects = Run.query.filter_by(user_id=user_id)
+
+    # Convert the objects to dicionaries to be returned
+    runs = []
+    for run in run_objects:
+        runs.append(run.to_dict())
+    
+    # Sort the list in decending order
+    runs.sort(key=lambda x: x["created_on"], reverse=True)
+
+    # Package the runs in one dictionary
+    output = {
+        "plans": plans,
+        "runs": runs
+    }
+
+    return flask.jsonify(output)
 
 @training_bp.route("/custom_plan/<int:plan_id>", methods=["GET"])
 @jwt_required
